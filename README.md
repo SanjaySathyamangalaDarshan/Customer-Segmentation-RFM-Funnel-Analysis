@@ -32,8 +32,8 @@ PostgreSQL (SQL: CTEs, window functions) · Excel (pivot cross-check) · Power B
 /powerbi    Dashboard (.pbix) and screenshots
 /sql        SQL scripts, run in order
 ```
-The raw dataset is not tored in this repo becuase of its size. Download it from the source linked above.
+The raw dataset is not stored in this repo becuase of its size. Download it from the source linked above.
 
 ## Messy-Middle Log
 
-See `docs/messy_middle_log.md` for assumptions, mistakes caught, and trade-offs made during the analysis.
+See [`docs/messy_middle_log.md`](docs/messy_middle_log.md) for assumptions, mistakes caught, and trade-offs made during the analysis.
