@@ -1,0 +1,53 @@
+-- ====================================================================
+-- Building a clean Event table.
+-- ====================================================================
+
+DROP TABLE IF EXISTS clean_events;
+
+CREATE TABLE clean_events AS
+WITH user_profile AS (
+  SELECT
+    user_id,
+    COUNT(*) AS total_user_events,
+    COUNT(*) FILTER (WHERE event_type IN ('cart','purchase')) AS cart_purchase_events
+  FROM raw_events
+  GROUP BY user_id
+),
+deduplicated_events AS (
+  SELECT
+    r.event_time, r.event_type, r.product_id, r.category_id,
+    COALESCE(r.category_code, 'uncategorized') AS category_code,
+    COALESCE(r.brand, 'unknown') AS brand,
+    r.price, r.user_id, r.user_session,
+    -- Flagged bots: above p99.9 the statistical results we got (368 events) AND never added to cart or purchased
+    CASE 
+        WHEN u.total_user_events > 368 AND u.cart_purchase_events = 0 THEN 'suspected_bot'
+        ELSE 'not_suspected_bot'
+    END AS bot_status,
+    ROW_NUMBER() OVER (
+      PARTITION BY r.event_time, r.event_type, r.product_id,
+                   r.price, r.user_id, r.user_session
+      ORDER BY r.event_time
+    ) AS rn
+  FROM raw_events r
+  JOIN user_profile u ON r.user_id = u.user_id
+  WHERE r.price > 0         
+)
+SELECT event_time, event_type, product_id, category_id, category_code,
+       brand, price, user_id, user_session, bot_status
+FROM deduplicated_events
+WHERE rn = 1;   
+
+-- INDEXING TO OPTIMISE THE PERFORMANCE
+CREATE INDEX idx_clean_events_user_id ON clean_events(user_id);
+CREATE INDEX idx_clean_events_event_type ON clean_events(event_type);
+CREATE INDEX idx_clean_events_time ON clean_events(event_time);
+CREATE INDEX idx_clean_events_bot_status ON clean_events(bot_status);
+
+-- COMPARING raw_events vs clean_events table data
+SELECT 
+    COUNT(*) AS rows_after_cleaning,
+    COUNT(CASE WHEN bot_status = 'suspected_bot' THEN 1 END) AS flagged_rows,
+    COUNT(DISTINCT CASE WHEN bot_status = 'suspected_bot' THEN user_id END) AS total_bot_users
+FROM clean_events;
+-- Results: Total Rows After Cleaning : 42,349,874, Flagged Rows : 304,011, Total Bot Users : 550
