@@ -2,7 +2,7 @@
 -- Created a VIEW so that Instead of connecting to base Table(rfm_segments) connecting to View improves and avoid Decoupling BI dashboards
 -- =======================================================================================================================================
 
-DROP VIEW IF EXISTS v_rfm_dashboard_summary CASCADE;
+DROP VIEW IF EXISTS v_rfm_dashboard_summary;
 
 CREATE VIEW v_rfm_dashboard_summary AS
 SELECT 
