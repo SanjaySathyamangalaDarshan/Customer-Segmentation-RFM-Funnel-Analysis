@@ -8,6 +8,16 @@ A multi-category online electronics and appliances store operates with a limited
 **Primary Goal:**
 Recommend **one specific user segment to target** and **one funnel stage to optimize**, with an estimated recoverable revenue figure based on stated assumptions, to guide retention spending.
 
+## Core Project Hypothesis
+
+**Hypothesis:** At Risk and Cannot Lose Them buyers are a higher-value, more efficient retention target per contact than Hibernating buyers. Hibernating is the largest segment, but it may partly reflect the one-month data window.
+
+**What would overturn it:**
+- Hibernating shows similar or higher recoverable revenue per contact.
+- At Risk buyers show little recent browsing.
+- Their funnel drop-off is no worse than other segments.
+
+
 ## Dataset
 
 - **Source:** eCommerce behavior data from multi category store (Kaggle, by Michael Kechinov), provided by REES46 Marketing Platform.
@@ -37,3 +47,4 @@ The raw dataset is not stored in this repo becuase of its size. Download it from
 ## Messy-Middle Log
 
 See [`docs/messy_middle_log.md`](docs/messy_middle_log.md) for assumptions, mistakes caught, and trade-offs made during the analysis.
+

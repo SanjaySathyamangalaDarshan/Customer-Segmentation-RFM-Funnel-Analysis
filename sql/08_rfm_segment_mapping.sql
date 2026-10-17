@@ -26,7 +26,7 @@ SELECT
         WHEN f_score >= 3 AND m_score >= 3 AND r_score >= 3 THEN 'Loyal Customers'
 
         --4. Potential Loyalists (R>=4, F<=3) mixes first time buyers with repeated buyers, has our 68% of buyers has F = 1 adding New Customer is needed
-        WHEN r_score >= 4 AND f_score = 1 THEN 'New customers'
+        WHEN r_score >= 4 AND f_score = 1 THEN 'New Customers'
         
         -- 4. Recent buyers with moderate frequency are flagged as Potential Loyalists
         WHEN r_score >= 4 AND f_score <= 3 THEN 'Potential Loyalists'
