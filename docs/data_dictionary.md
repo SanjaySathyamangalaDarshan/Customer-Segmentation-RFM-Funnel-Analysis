@@ -88,3 +88,39 @@ Pre-aggregated summary view designed for high-performance consumption by BI repo
 | `avg_monetary_spend` | Numeric | Average revenue generated per customer within the segment (`AVG(monetary)`). |
 | `avg_recency_days` | Numeric | Average recency in days for customers in the segment (`AVG(recency_days)`). |
 | `avg_frequency` | Numeric | Average number of purchase sessions per customer in the segment (`AVG(frequency)`). |
+
+---
+
+### `user_stages` (Staging Table)
+User-level behavioral summary table grouping unique human shoppers (`bot_status = 'not_suspected_bot'`) to condense raw multi-click event logs into single-row indicator flags.
+
+| Column Name | Data Type | Description & Transformation Rule |
+| :--- | :--- | :--- |
+| `user_id` | BigInt | Unique identifier for the customer/user account. |
+| `had_view` | Boolean | Boolean flag (`BOOL_OR`) indicating whether the user performed at least one `view` event. |
+| `had_cart` | Boolean | Boolean flag (`BOOL_OR`) indicating whether the user performed at least one `cart` event. |
+| `had_purchase` | Boolean | Boolean flag (`BOOL_OR`) indicating whether the user performed at least one `purchase` event. |
+
+---
+
+### `v_overall_funnel` (Database View)
+Aggregates unique user volume across sequential e-commerce funnel stages (`view` , `cart` , `purchase via cart`), calculating conversion and drop-off rates.
+
+| Column Name | Data Type | Description & Transformation Rule |
+| :--- | :--- | :--- |
+| `funnel_stage` | Varchar | Descriptive name of the funnel progression step (`1. View`, `2. Cart`, `3. Purchase (via cart)`). |
+| `users` | BigInt | Total unique human users reaching that specific funnel stage. |
+| `pct_of_start` | Numeric | Conversion percentage relative to the initial viewer base (`100.0` baseline). |
+| `pct_of_previous` | Numeric | Conversion percentage relative to the immediately preceding funnel stage. |
+| `drop_off_pct` | Numeric | Percentage of users lost at the transition from the previous stage. |
+
+---
+
+### `v_user_paths` (Database View)
+Classifies every unique viewer into distinct behavioral pathways to uncover cart-skip behaviors (e.g., instant/direct checkouts bypassing the cart event).
+
+| Column Name | Data Type | Description & Transformation Rule |
+| :--- | :--- | :--- |
+| `user_path` | Varchar | Categorized behavioral trajectory: `1. Viewed only`, `2. Cart abandoned (no purchase)`, `3a. Cart, then purchase`, or `3b. Purchase without cart`. |
+| `users` | BigInt | Total unique users falling into that specific behavioral path category. |
+| `pct_of_viewers` | Numeric | Percentage proportion of each user path relative to all unique viewers. |
