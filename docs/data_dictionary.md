@@ -124,3 +124,88 @@ Classifies every unique viewer into distinct behavioral pathways to uncover cart
 | `user_path` | Varchar | Categorized behavioral trajectory: `1. Viewed only`, `2. Cart abandoned (no purchase)`, `3a. Cart, then purchase`, or `3b. Purchase without cart`. |
 | `users` | BigInt | Total unique users falling into that specific behavioral path category. |
 | `pct_of_viewers` | Numeric | Percentage proportion of each user path relative to all unique viewers. |
+---
+
+### `user_category_stages` (Table)
+Aggregates user-level event stages per product category to enable multi-dimensional funnel analysis.
+
+| Column Name | Data Type | Description & Transformation Rule |
+| :--- | :--- | :--- |
+| `user_id` | BigInt | Unique identifier for the customer account. |
+| `category_code` | Varchar | Hierarchical category string (missing values imputed as `'uncategorized'`). |
+| `had_view` | Boolean | `TRUE` if the user performed at least one `view` event in this category. Derived via `BOOL_OR(event_type = 'view')`. |
+| `had_cart` | Boolean | `TRUE` if the user performed at least one `cart` event in this category. Derived via `BOOL_OR(event_type = 'cart')`. |
+| `had_purchase` | Boolean | `TRUE` if the user performed at least one `purchase` event in this category. Derived via `BOOL_OR(event_type = 'purchase')`. |
+
+
+---
+
+### `v_funnel_by_category` (Database View)
+Provides category-level conversion metrics, stage-by-stage drop-off rates, and cart-abandonment percentages.
+
+| Column Name | Data Type | Description & Transformation Rule |
+| :--- | :--- | :--- |
+| `category_code` | Varchar | Product category group. Filtered to categories with $\ge 1,000$ viewers to eliminate low-sample noise. |
+| `viewers` | BigInt | Count of unique users viewing products in this category (`COUNT(*) FILTER (WHERE had_view)`). |
+| `carters` | BigInt | Count of unique users adding items to cart in this category (`had_view AND had_cart`). |
+| `cart_buyers` | BigInt | Count of unique users who carted and completed a purchase in this category (`had_view AND had_cart AND had_purchase`). |
+| `purchasers` | BigInt | Total unique purchasers in this category (`had_view AND had_purchase`), including direct buy-now users. |
+| `view_to_cart_pct` | Numeric | Conversion rate from View to Cart stage: `ROUND(100.0 * carters / viewers, 2)`. |
+| `cart_to_purchase_pct` | Numeric | Conversion rate from Cart to Purchase stage: `ROUND(100.0 * cart_buyers / carters, 2)`. Evaluates to `NULL` for categories with 0 carters. |
+| `cart_abandon_pct` | Numeric | Percentage of carters who abandoned without purchasing in this category: `ROUND(100.0 * (carters - cart_buyers) / carters, 2)`. |
+| `overall_conversion_pct` | Numeric | Overall conversion rate from View to Purchase stage: `ROUND(100.0 * purchasers / viewers, 2)`. |
+
+---
+
+### `user_price_stages` (Table)
+Groups user interactions into data-driven price bands anchored on historical price percentiles 
+
+| Column Name | Data Type | Description & Transformation Rule |
+| :--- | :--- | :--- |
+| `user_id` | BigInt | Unique identifier for the customer account. |
+| `price_band` | Varchar | Categorical price band: `'1. Under 65'`, `'2. 65 to 164.99'`, `'3. 165 to 359.99'`, or `'4. 360 and above'`. |
+| `had_view` | Boolean | `TRUE` if the user performed a `view` event on an item within this price band. |
+| `had_cart` | Boolean | `TRUE` if the user performed a `cart` event on an item within this price band. |
+| `had_purchase` | Boolean | `TRUE` if the user performed a `purchase` event on an item within this price band. |
+
+---
+
+### `v_funnel_by_price_band` (Database View)
+Aggregates stage conversion rates and cart abandonment volumes grouped by price band.
+
+| Column Name | Data Type | Description & Transformation Rule |
+| :--- | :--- | :--- |
+| `price_band` | Varchar | Price tier identifier. |
+| `viewers` | BigInt | Count of unique users viewing items in this price band. |
+| `carters` | BigInt | Count of unique users adding items to cart in this price band. |
+| `cart_buyers` | BigInt | Count of unique users who carted and purchased within this price band. |
+| `purchasers` | BigInt | Total unique purchasers within this price band. |
+| `view_to_cart_pct` | Numeric | Percentage of viewers adding items to cart in this price band. |
+| `cart_to_purchase_pct` | Numeric | Percentage of carters completing a purchase within this price band. |
+| `cart_abandon_pct` | Numeric | Abandonment rate for users who carted within this price band. |
+| `overall_conversion_pct` | Numeric | Net conversion rate from view to purchase within this price band. |
+
+---
+
+### `v_segment_purchase_path` (Database View)
+Maps purchase path mechanics (cart vs. direct buy-now) across customer loyalty segments by joining `rfm_segments` with `user_stages`.
+
+| Column Name | Data Type | Description & Transformation Rule |
+| :--- | :--- | :--- |
+| `customer_segment` | Varchar | RFM segment label (e.g., `'Hibernating'`, `'Champions'`, `'At Risk'`). |
+| `buyers` | BigInt | Total count of distinct purchasing customers in this RFM segment. |
+| `bought_via_cart` | BigInt | Count of buyers who had at least one cart event (`COUNT(*) FILTER (WHERE u.had_cart)`). |
+| `bought_without_cart` | BigInt | Count of buyers who purchased directly without a cart event (`COUNT(*) FILTER (WHERE NOT u.had_cart)`). |
+| `pct_skip_cart` | Numeric | Percentage of buyers who skipped the cart: `ROUND(100.0 * bought_without_cart / buyers, 1)`. |
+
+---
+
+### Total Population Sizing 
+Quantifies the complete user population, bridging active RFM buyer segments with non-purchasing visitors.
+
+| Column / Segment Name | Data Type | Description & Sizing Context |
+| :--- | :--- | :--- |
+| `segment` | Varchar | Segment classification. Non-purchasing users are labeled as `'Never Purchased'` via `COALESCE(s.customer_segment, 'Never Purchased')`. |
+| `users` | BigInt | Total distinct user count per segment. |
+
+> 

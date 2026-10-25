@@ -30,6 +30,9 @@ Recommend **one specific user segment to target** and **one funnel stage to opti
 - **Temporal window:** The data covers strictly one month. Activity before this period is not visible, so "new" users may include returning customers, and true long-term purchase frequency is understated.
 - **Segment handling:** Users who never completed a purchase are excluded from standard RFM scoring (they have no Monetary value) but are kept in the funnel analysis as a distinct "Never Purchased" group.
 - **Financial metric:** Recommendations are evaluated on gross revenue impact only, because product costs and profit margins are not present in the event data.
+- **Category data:** A large share of events has no category code. These are labelled `uncategorized` and form the largest group (about 1.5M viewers), so category-level findings cover only the rest of the store.
+- **Cart tracking:** 41.6% of buyers have no cart event, and apparel has no cart events at all. The data can't say why (a buy-now path, carts created before October, or tracking gaps), so both the strict funnel and the user-path breakdown are reported.
+- **Device and channel:** The dataset has no device or channel columns, so the funnel is split by product category instead.
 
 ## Tools
 
