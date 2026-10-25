@@ -55,4 +55,4 @@ SELECT * FROM v_funnel_by_price_band ORDER BY price_band;
 --              The two highest bands hold the largest abandoned carts, and each of those carts is worth more. That is a useful input for our recoverable-revenue estimate.
 
 -- Conditions: 1. A user can appear in several bands, so don't add the rows. The viewer total is about 5.9M against 3.02M real users.
-               2. "Bought without a cart event" here means within that band. A cart in another band wouldn't count.
+--             2. "Bought without a cart event" here means within that band. A cart in another band wouldn't count.

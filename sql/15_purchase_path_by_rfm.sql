@@ -54,4 +54,8 @@ ORDER BY users DESC;
 --          | At Risk | 11087 |
 --          | Cannot Lose Them | 1776 |
 --          | Wholesale Key Accounts | 348 |
+-- Findings: 1. 2,673,767 Never Purchased plus the 347,118 buyers gives 3,020,885 users in user_stages.
+--	         2.	Each buyer segment matches our earlier tables (Hibernating 156,045, General 74,039, and so on).
+--           3.	That total is 162 more than our 3,020,723 viewers. Those 162 users have no view event: 64 are buyers who purchased without a view (the check I ran earlier), and the other 98 are Never Purchased users with a cart event but no view. 
+--           4. It means 88.5% of all users never bought in October, and 11.5% did. The Never Purchased group is about 7.7 times the size of the whole buyer base. Most of it is browsing with no purchase, and the cart abandoners (134,222) are the part with clear intent.
 

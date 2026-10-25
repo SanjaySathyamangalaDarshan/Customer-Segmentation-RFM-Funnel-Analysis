@@ -1,5 +1,7 @@
 # Customer Segmentation (RFM) & Funnel Drop-off Analysis (E-Commerce)
 
+> **Status:** Analysis complete (SQL funnel, RFM segmentation, hypothesis test). Excel cross-check, Power BI dashboard, and final recommendation are in progress.
+
 ## Business Context & Problem Statement
 
 **Business Question:**
@@ -12,11 +14,18 @@ Recommend **one specific user segment to target** and **one funnel stage to opti
 
 **Hypothesis:** At Risk and Cannot Lose Them buyers are a higher-value, more efficient retention target per contact than Hibernating buyers. Hibernating is the largest segment, but it may partly reflect the one-month data window.
 
-**What would overturn it:**
-- Hibernating shows similar or higher recoverable revenue per contact.
-- At Risk buyers show little recent browsing.
-- Their funnel drop-off is no worse than other segments.
+**Status:** Tested. Verdict: **partly supported**. At Risk + Cannot Lose Them are worth about 1.4 times more per contact than Hibernating at equal response rates, but a small response-rate difference could erase the advantage. Full evidence: [`docs/hypothesis_verdict.md`](docs/hypothesis_verdict.md).
 
+### Hypothesis Verdict
+
+I tested whether our high-value slipping customers (*At Risk* and *Cannot Lose Them*) showed higher browsing recency and greater value per contact than dormant *Hibernating* users. While activity recency was surprisingly close across both cohorts, the target segment delivered a 40.1% higher average order value (420.94 vs. 300.53) and superior revenue per touchpoint, revealing a massive trade-off against a site-wide cart-abandonment pool of 134,320 users. However, historical event logs cannot reveal true customer intent or actual email response rates, meaning the true effectiveness of these win-back strategies must be validated through live A/B testing.
+
+## Key Findings (so far)
+
+- **Funnel:** 3,020,723 viewers, 336,961 carted, 202,739 bought via the cart. 41.6% of buyers have no cart event, so the strict funnel shows 6.71% conversion while about 11.5% of viewers actually bought.
+- **Segments:** Hibernating is the largest segment (45% of buyers, 23.8% of revenue) but partly reflects the one-month window. Champions are 4% of buyers and 20.9% of revenue. 348 wholesale-like accounts bring 6.3% of revenue.
+- **Two recovery levers:** At Risk + Cannot Lose Them (12,863 buyers) are the best target per contact, and 134,320 cart abandoners hold about 2.2M at a 5% recovery rate.
+- **Final recommendation:** to be added after the dashboard.
 
 ## Dataset
 
@@ -41,11 +50,11 @@ PostgreSQL (SQL: CTEs, window functions) · Excel (pivot cross-check) · Power B
 ## Project Structure
 
 ```
-/docs       Messy-Middle log, data dictionary
+/docs       Messy-Middle log, data dictionary, hypothesis verdict
 /powerbi    Dashboard (.pbix) and screenshots
 /sql        SQL scripts, run in order
 ```
-The raw dataset is not stored in this repo becuase of its size. Download it from the source linked above.
+The raw dataset is not stored in this repo becuase of its size. Download it from the link (https://www.kaggle.com/datasets/mkechinov/ecommerce-behavior-data-from-multi-category-store?select=2019-Oct.csv)
 
 ## Messy-Middle Log
 
