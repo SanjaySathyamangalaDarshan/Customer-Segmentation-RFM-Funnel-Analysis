@@ -14,11 +14,11 @@ Recommend **one specific user segment to target** and **one funnel stage to opti
 
 **Hypothesis:** At Risk and Cannot Lose Them buyers are a higher-value, more efficient retention target per contact than Hibernating buyers. Hibernating is the largest segment, but it may partly reflect the one-month data window.
 
-**Status:** Tested. Verdict: **partly supported**. At Risk + Cannot Lose Them are worth about 1.4 times more per contact than Hibernating at equal response rates, but a small response-rate difference could erase the advantage. Full evidence: [`docs/hypothesis_verdict.md`](docs/hypothesis_verdict.md).
+**Status:** Tested. Verdict: **partly supported**. Full evidence: [`docs/hypothesis_verdict.md`](docs/hypothesis_verdict.md).
 
 ### Hypothesis Verdict
 
-I tested whether our high-value slipping customers (*At Risk* and *Cannot Lose Them*) showed higher browsing recency and greater value per contact than dormant *Hibernating* users. While activity recency was surprisingly close across both cohorts, the target segment delivered a 40.1% higher average order value (420.94 vs. 300.53) and superior revenue per touchpoint, revealing a massive trade-off against a site-wide cart-abandonment pool of 134,320 users. However, historical event logs cannot reveal true customer intent or actual email response rates, meaning the true effectiveness of these win-back strategies must be validated through live A/B testing.
+**Verdict: partly supported.** I tested whether At Risk and Cannot Lose Them buyers are a better retention target per contact than Hibernating buyers. At equal response rates they are worth about 1.4 times more per contact (average order value 420.94 vs 300.53), and they are slightly more active recently (41.1% vs 38.1% viewed or carted in the last two weeks). The advantage is modest: Hibernating would match it with a response rate of about 7% against 5%. In total, Hibernating (about 2.34M at a 5% response rate) and the 134,320 cart abandoners (about 2.18M) hold far more recoverable revenue than At Risk + Cannot Lose Them (about 0.27M), so the segment advantage matters only under a limited contact budget. The dataset has no contact or response records, so the real win-back rates must be confirmed with a live A/B test.
 
 ## Key Findings (so far)
 
