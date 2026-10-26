@@ -51,6 +51,7 @@ PostgreSQL (SQL: CTEs, window functions) · Excel (pivot cross-check) · Power B
 
 ```
 /docs       Messy-Middle log, data dictionary, hypothesis verdict
+/excel      Excel pivot cross-check workbook, segment reconciliation sheet and screenshots
 /powerbi    Dashboard (.pbix) and screenshots
 /sql        SQL scripts, run in order
 ```
