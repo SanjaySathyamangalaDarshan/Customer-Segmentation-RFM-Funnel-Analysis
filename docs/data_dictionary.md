@@ -208,4 +208,29 @@ Quantifies the complete user population, bridging active RFM buyer segments with
 | `segment` | Varchar | Segment classification. Non-purchasing users are labeled as `'Never Purchased'` via `COALESCE(s.customer_segment, 'Never Purchased')`. |
 | `users` | BigInt | Total distinct user count per segment. |
 
-> 
+> ---
+
+### `v_hypothesis_pools`
+Pre-calculated campaign target pools and per-contact revenue projections used for Page 3 hypothesis testing and ROI simulation.
+
+| Column Name | Data Type | Description & Transformation Rule |
+| :--- | :--- | :--- |
+| `pool` | Text | Targeted user segment pool (`At Risk + Cannot Lose Them`, `Cart abandoners`, `Hibernating`). |
+| `users` | BigInt / Numeric | Total user population count within the specified pool. |
+| `avg_value` | Numeric | Average cart item price / historical customer value used as baseline conversion yield ($). |
+| `per_contact_2pct` | Numeric | Expected revenue per contacted user assuming a **2% response rate** ($). |
+| `per_contact_5pct` | Numeric | Expected revenue per contacted user assuming a **5% response rate** ($). |
+| `per_contact_10pct` | Numeric | Expected revenue per contacted user assuming a **10% response rate** ($). |
+| `total_5pct` | Numeric | Total projected revenue generated across the entire pool at a baseline **5% response rate** ($). |
+
+---
+
+### `v_hypothesis_activity`
+Comparative behavioral engagement metrics between high-value at-risk cohorts and mass-market hibernating cohorts.
+
+| Column Name | Data Type | Description & Transformation Rule |
+| :--- | :--- | :--- |
+| `grp` | Text | Comparative group classification (`At Risk + Cannot Lose Them` vs. `Hibernating`). |
+| `pct_browsed` | Numeric | Percentage of users in the group who demonstrated browsing/view activity (%). |
+| `pct_carted` | Numeric | Percentage of users in the group who added items to their cart (%). |
+| `buyers` | BigInt / Numeric | Total count of unique paying buyers within the group. |
