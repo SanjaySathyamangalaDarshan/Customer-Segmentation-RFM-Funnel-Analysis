@@ -29,9 +29,9 @@ Recommend **one specific user segment to target** and **one funnel stage to opti
 
 ## Dashboard
 
-![Funnel](powerbi/screenshots/1_funnel.png)
-![Segments](powerbi/screenshots/2_segments.png)
-![Hypothesis](powerbi/screenshots/3_hypothesis.png)
+![Funnel](powerbi/Screenshots/1_funnel.png)
+![Segments](powerbi/Screenshots/2_segments.png)
+![Hypothesis](powerbi/Screenshots/3_hypothesis.png)
 
 Files: [`powerbi/rfm_funnel_dashboard.pbix`](powerbi/rfm_funnel_dashboard.pbix) (opens in Power BI Desktop; it connects to a local PostgreSQL database, so refreshing needs that database) and a [PDF export](powerbi/rfm_funnel_dashboard.pdf).
 
