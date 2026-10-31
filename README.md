@@ -27,6 +27,14 @@ Recommend **one specific user segment to target** and **one funnel stage to opti
 - **Two recovery levers:** At Risk + Cannot Lose Them (12,863 buyers) are the best target per contact, and 134,320 cart abandoners hold about 2.2M at a 5% recovery rate.
 - **Final recommendation:** to be added after the dashboard.
 
+## Dashboard
+
+![Funnel](powerbi/screenshots/1_funnel.png)
+![Segments](powerbi/screenshots/2_segments.png)
+![Hypothesis](powerbi/screenshots/3_hypothesis.png)
+
+Files: [`powerbi/rfm_funnel_dashboard.pbix`](powerbi/rfm_funnel_dashboard.pbix) (opens in Power BI Desktop; it connects to a local PostgreSQL database, so refreshing needs that database) and a [PDF export](powerbi/rfm_funnel_dashboard.pdf).
+
 ## Dataset
 
 - **Source:** eCommerce behavior data from multi category store (Kaggle, by Michael Kechinov), provided by REES46 Marketing Platform.
